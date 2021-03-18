@@ -40,7 +40,7 @@ export class UsersController {
         return user;
     }
 
-    @Get(':email')
+    @Get('getByEmail/:email')
     @ApiResponse({
         status: 200,
         description: 'Находит пользователя по email',

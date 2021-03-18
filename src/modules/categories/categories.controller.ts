@@ -21,7 +21,7 @@ export class CategoriesController {
         return await this.categoryService.findAll();
     }
 
-    @Get(':id')
+    @Get(': id')
     @ApiResponse({
         status: 200,
         description: 'Находит категорию по id',
@@ -53,7 +53,7 @@ export class CategoriesController {
         return this.categoryService.create(createCategoryDto);
     }
 
-    @Get(':parentId')
+    @Get('getByParentId/:parentId')
     @ApiResponse({
         status: 200,
         description: 'возвращает список категорий по id родительской категории',
