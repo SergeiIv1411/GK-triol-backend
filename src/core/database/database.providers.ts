@@ -3,6 +3,7 @@ import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../constants';
 import { databaseConfig } from './database.config';
 import { User } from '../../modules/users/user.entity';
 import { Brand } from '../../modules/brands/brand.entity';
+import { Color } from '../../modules/colors/entities/color.entity';
 
 export const databaseProviders = [{
     provide: SEQUELIZE,
@@ -22,7 +23,7 @@ export const databaseProviders = [{
                 config = databaseConfig.development;
         }
         const sequelize = new Sequelize(config);
-        sequelize.addModels([User, Brand]);
+        sequelize.addModels([User, Brand, Color]);
         await sequelize.sync();
         return sequelize;
     },
