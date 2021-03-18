@@ -1,25 +1,21 @@
 import { Table, Column, Model, DataType, NotEmpty } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 
-@Table
-export class Brand extends Model<Brand> {
+@Table({ 
+    timestamps: false
+  })
+export class Country extends Model<Country> {
     @ApiProperty()
     @NotEmpty
     @Column({
         type: DataType.STRING,
         allowNull: false,
     })
-    title: string;
+    name: string;
     
     @ApiProperty()
     @Column({
         type: DataType.STRING
     })
     description: string;
-
-    @ApiProperty()
-    @Column({
-        type: DataType.STRING
-    })
-    image: string;
 }
