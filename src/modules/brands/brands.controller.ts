@@ -42,6 +42,12 @@ export class BrandsController {
 
     // @UseGuards(AuthGuard('jwt'))
     @Post()
+    @ApiBody({ type: BrandDto})
+    @ApiResponse({
+        status: 200,
+        description: 'Создание брэнда',
+        type: Brand,
+      })
     create(@Body() createBrandDto: BrandDto): Promise<Brand> {
         // create a new post and return the newly created post
         return this.brandService.create(createBrandDto);

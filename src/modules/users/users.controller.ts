@@ -41,6 +41,11 @@ export class UsersController {
     }
 
     @Get(':email')
+    @ApiResponse({
+        status: 200,
+        description: 'Находит пользователя по email',
+        type: User,
+      })
     async findOneByEmail(@Param('email') email: string): Promise<User> {
         // find the user with this email
         const user = await this.userService.findOneByEmail(email);
@@ -56,6 +61,11 @@ export class UsersController {
 
     // @UseGuards(AuthGuard('jwt'))
     @Post()
+    @ApiResponse({
+        status: 200,
+        description: 'Создание пользователя',
+        type: User,
+      })
     create(@Body() createUserDto: UserDto): Promise<User> {
         // create a new post and return the newly created post
         return this.userService.create(createUserDto);

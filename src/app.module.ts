@@ -6,6 +6,7 @@ import { DatabaseModule } from './core/database/database.module';
 import { BrandsModule } from './modules/brands/brands.module';
 import { ColorsModule } from './modules/colors/colors.module';
 import { UsersModule } from './modules/users/users.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { UsersModule } from './modules/users/users.module';
     DatabaseModule,
     UsersModule,
     BrandsModule,
-    ColorsModule
+    ColorsModule,
+    CategoriesModule
   ],
   controllers: [AppController],
   providers: [AppService],
