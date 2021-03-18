@@ -1,74 +1,56 @@
 import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
-import { UserDto } from './dto/user.dto';
-import { User } from './user.entity';
-import { UsersService } from './users.service';
+import { BrandDto } from './dto/brand.dto';
+import { Brand } from './brand.entity';
+import { BrandsService } from './brands.service';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('users')
-@Controller('users')
-export class UsersController {
+@ApiTags('brands')
+@Controller('brands')
+export class BrandsController {
 
-    constructor(private readonly userService: UsersService) { }
+    constructor(private readonly brandService: BrandsService) { }
 
     @Get()
     @ApiResponse({
         status: 200,
-        description: 'возвращает список пользователей',
-        type: [User],
+        description: 'возвращает список брэндов',
+        type: [Brand],
       })
-    async findAll(): Promise<User[]> {
-        // get all users in the db
-        return await this.userService.findAll();
+    async findAll(): Promise<Brand[]> {
+        // get all brands in the db
+        return await this.brandService.findAll();
     }
 
     @Get(':id')
     @ApiResponse({
         status: 200,
-        description: 'Находит пользователя по id',
-        type: User,
+        description: 'Находит брэнд по id',
+        type: Brand,
       })
-    async findOneById(@Param('id') id: number): Promise<User> {
+    async findOneById(@Param('id') id: number): Promise<Brand> {
         // find the user with this id
-        const user = await this.userService.findOneById(id);
+        const brand = await this.brandService.findOneById(id);
 
         // if the user doesn't exit in the db, throw a 404 error
-        if (!user) {
-            throw new NotFoundException('This User doesn\'t exist');
+        if (!brand) {
+            throw new NotFoundException('This Brand doesn\'t exist');
         }
 
         // if user exist, return the post
-        return user;
-    }
-
-    @Get(':email')
-    @ApiResponse({
-        status: 200,
-        description: 'Находит пользователя по email',
-        type: User,
-      })
-    async findOneByEmail(@Param('email') email: string): Promise<User> {
-        // find the user with this email
-        const user = await this.userService.findOneByEmail(email);
-
-        // if the user doesn't exit in the db, throw a 404 error
-        if (!user) {
-            throw new NotFoundException('This User doesn\'t exist');
-        }
-
-        // if user exist, return the post
-        return user;
+        return brand;
     }
 
     // @UseGuards(AuthGuard('jwt'))
     @Post()
+    @ApiBody({ type: BrandDto})
     @ApiResponse({
         status: 200,
-        description: 'Создание пользователя',
-        type: User,
+        description: 'Создание брэнда',
+        type: Brand,
       })
-    create(@Body() createUserDto: UserDto): Promise<User> {
+    create(@Body() createBrandDto: BrandDto): Promise<Brand> {
         // create a new post and return the newly created post
-        return this.userService.create(createUserDto);
+        return this.brandService.create(createBrandDto);
     }
 
     // @UseGuards(AuthGuard('jwt'))
