@@ -22,4 +22,14 @@ export class BrandsService {
     async findOneById(id: number): Promise<Brand> {
         return await this.brandRepository.findOne<Brand>({ where: { id } });
     }
+
+    async update(id: number, updateBrandDto: BrandDto) {
+        const [numberOfAffectedRows, [brand]] = await this.brandRepository.update({ ...updateBrandDto }, { where: { id }, returning: true });
+
+        return { numberOfAffectedRows, brand };
+    }
+
+    async delete(id: number) {
+        return await this.brandRepository.destroy({ where: { id } });
+    }
 }

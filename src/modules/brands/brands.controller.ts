@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { BrandDto } from './dto/brand.dto';
 import { Brand } from './brand.entity';
 import { BrandsService } from './brands.service';
@@ -15,7 +15,7 @@ export class BrandsController {
         status: 200,
         description: 'возвращает список брэндов',
         type: [Brand],
-      })
+    })
     async findAll(): Promise<Brand[]> {
         // get all brands in the db
         return await this.brandService.findAll();
@@ -26,7 +26,7 @@ export class BrandsController {
         status: 200,
         description: 'Находит брэнд по id',
         type: Brand,
-      })
+    })
     async findOneById(@Param('id') id: number): Promise<Brand> {
         // find the brand with this id
         const brand = await this.brandService.findOneById(id);
@@ -42,15 +42,55 @@ export class BrandsController {
 
     // @UseGuards(AuthGuard('jwt'))
     @Post()
-    @ApiBody({ type: BrandDto})
+    @ApiBody({ type: BrandDto })
     @ApiResponse({
         status: 200,
         description: 'Создание брэнда',
         type: Brand,
-      })
+    })
     create(@Body() createBrandDto: BrandDto): Promise<Brand> {
         // create a new brand and return the newly created brand
         return this.brandService.create(createBrandDto);
+    }
+
+    @Put(':id')
+    @ApiResponse({
+        status: 200,
+        description: 'Редактирование брэнда',
+        type: Brand,
+    })
+    async update(@Param('id') id: number, @Body() updateBrandDto: BrandDto) {
+        // get the number of row affected and the updated brand
+        const { numberOfAffectedRows, brand } = await this.brandService.update(id, updateBrandDto);
+
+        // if the number of row affected is zero, 
+        // it means the brand doesn't exist in our db
+        if (numberOfAffectedRows === 0) {
+            throw new NotFoundException('This Brand doesn\'t exist');
+        }
+
+        // return the updated brand
+        return brand;
+    }
+
+    @Delete(':id')
+    @ApiResponse({
+        status: 200,
+        description: 'Удаление брэнда',
+        type: Brand,
+    })
+    async remove(@Param('id') id: number) {
+        // delete the brand with this id
+        const deleted = await this.brandService.delete(id);
+
+        // if the number of row affected is zero, 
+        // then the brand doesn't exist in our db
+        if (deleted === 0) {
+            throw new NotFoundException('This Brand doesn\'t exist');
+        }
+
+        // return success message
+        return 'Successfully deleted';
     }
 
     // @UseGuards(AuthGuard('jwt'))
