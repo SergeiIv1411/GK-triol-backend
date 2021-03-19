@@ -6,6 +6,7 @@ import { Brand } from '../../modules/brands/brand.entity';
 import { Color } from '../../modules/colors/entities/color.entity';
 import { Category } from '../../modules/categories/category.entity';
 import { Country } from 'src/modules/countries/country.entity';
+import { Barcode } from 'src/modules/barcodes/barcode.entity';
 
 export const databaseProviders = [{
     provide: SEQUELIZE,
@@ -25,7 +26,7 @@ export const databaseProviders = [{
                 config = databaseConfig.development;
         }
         const sequelize = new Sequelize(config);
-        sequelize.addModels([User, Brand, Color, Category, Country]);
+        sequelize.addModels([User, Brand, Color, Category, Country, Barcode]);
         await sequelize.sync();
         return sequelize;
     },

@@ -31,4 +31,14 @@ export class CategoriesService {
             }
           });
     }
+
+    async update(id: number, updateCategoryDto: CategoryDto) {
+        const [numberOfAffectedRows, [category]] = await this.categoryRepository.update({ ...updateCategoryDto }, { where: { id }, returning: true });
+
+        return { numberOfAffectedRows, category };
+    }
+
+    async delete(id: number) {
+        return await this.categoryRepository.destroy({ where: { id } });
+    }
 }

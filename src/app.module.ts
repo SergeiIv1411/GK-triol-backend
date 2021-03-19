@@ -8,6 +8,7 @@ import { ColorsModule } from './modules/colors/colors.module';
 import { UsersModule } from './modules/users/users.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { CountriesModule } from './modules/countries/countries.module';
+import { BarcodesModule } from './modules/barcodes/barcodes.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { CountriesModule } from './modules/countries/countries.module';
     BrandsModule,
     ColorsModule,
     CategoriesModule,
-    CountriesModule
+    CountriesModule,
+    BarcodesModule
   ],
   controllers: [AppController],
   providers: [AppService],

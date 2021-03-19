@@ -36,7 +36,7 @@ export class UsersController {
             throw new NotFoundException('This User doesn\'t exist');
         }
 
-        // if user exist, return the post
+        // if user exist, return the user
         return user;
     }
 
@@ -55,7 +55,7 @@ export class UsersController {
             throw new NotFoundException('This User doesn\'t exist');
         }
 
-        // if user exist, return the post
+        // if user exist, return the user
         return user;
     }
 
@@ -67,7 +67,7 @@ export class UsersController {
         type: User,
       })
     create(@Body() createUserDto: UserDto): Promise<User> {
-        // create a new post and return the newly created post
+        // create a new user and return the newly created user
         return this.userService.create(createUserDto);
     }
 

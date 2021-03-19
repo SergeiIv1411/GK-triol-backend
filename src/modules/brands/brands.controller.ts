@@ -28,15 +28,15 @@ export class BrandsController {
         type: Brand,
       })
     async findOneById(@Param('id') id: number): Promise<Brand> {
-        // find the user with this id
+        // find the brand with this id
         const brand = await this.brandService.findOneById(id);
 
-        // if the user doesn't exit in the db, throw a 404 error
+        // if the brand doesn't exit in the db, throw a 404 error
         if (!brand) {
             throw new NotFoundException('This Brand doesn\'t exist');
         }
 
-        // if user exist, return the post
+        // if brand exist, return the brand
         return brand;
     }
 
@@ -49,7 +49,7 @@ export class BrandsController {
         type: Brand,
       })
     create(@Body() createBrandDto: BrandDto): Promise<Brand> {
-        // create a new post and return the newly created post
+        // create a new brand and return the newly created brand
         return this.brandService.create(createBrandDto);
     }
 
