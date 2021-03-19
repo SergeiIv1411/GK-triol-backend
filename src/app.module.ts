@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { MulterModule } from '@nestjs/platform-express';
 import { DatabaseModule } from './core/database/database.module';
 import { BrandsModule } from './modules/brands/brands.module';
 import { ColorsModule } from './modules/colors/colors.module';
@@ -19,7 +20,7 @@ import { BarcodesModule } from './modules/barcodes/barcodes.module';
     ColorsModule,
     CategoriesModule,
     CountriesModule,
-    BarcodesModule
+    BarcodesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

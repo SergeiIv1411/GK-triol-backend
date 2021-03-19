@@ -41,4 +41,10 @@ export class CategoriesService {
     async delete(id: number) {
         return await this.categoryRepository.destroy({ where: { id } });
     }
+
+    async setImage(id: number, image: string) {
+        const [numberOfAffectedRows, [category]] = await this.categoryRepository.update({ image }, { where: { id }, returning: true });
+
+        return { numberOfAffectedRows, category };
+    }
 }

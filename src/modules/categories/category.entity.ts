@@ -22,4 +22,10 @@ export class Category extends Model<Category> {
         type: DataType.INTEGER
     })
     parentId: number;
+    
+    @ApiProperty()
+    @Column({
+        type: DataType.STRING
+    })
+    image: string;
 }

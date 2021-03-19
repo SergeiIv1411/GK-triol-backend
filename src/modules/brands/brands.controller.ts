@@ -1,8 +1,27 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { BrandDto } from './dto/brand.dto';
 import { Brand } from './brand.entity';
 import { BrandsService } from './brands.service';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { imageFileFilter } from 'src/utils/file-upload.utils';
+import { FILE_BRAND_DIR } from 'src/core/constants';
+import path = require('path');
+import { v4 as uuidv4 } from 'uuid';
+import { diskStorage } from 'multer';
+
+export const storage = {
+    storage: diskStorage({
+        destination: FILE_BRAND_DIR,
+        filename: (req, file, cb) => {
+            const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+            const extension: string = path.parse(file.originalname).ext;
+
+            cb(null, `${filename}${extension}`)
+        },
+    }), fileFilter: imageFileFilter
+
+}
 
 @ApiTags('brands')
 @Controller('brands')
@@ -91,6 +110,21 @@ export class BrandsController {
 
         // return success message
         return 'Successfully deleted';
+    }
+
+    @Put('uploadimage/:brandid')
+    @UseInterceptors(
+        FileInterceptor('image', storage),
+    )
+    async uploadImage(@Param('brandid') brandId, @UploadedFile() file): Promise<Brand> {
+        const { numberOfAffectedRows, brand } = await this.brandService.setImage(Number(brandId), file.filename);
+
+        if (numberOfAffectedRows === 0) {
+            throw new NotFoundException('This Brand doesn\'t exist');
+        }
+
+        // return the updated brand
+        return brand;
     }
 
     // @UseGuards(AuthGuard('jwt'))

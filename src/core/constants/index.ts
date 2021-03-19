@@ -8,3 +8,5 @@ export const COLOR_REPOSITORY = 'COLOR_REPOSITORY';
 export const CATEGORY_REPOSITORY = 'CATEGORY_REPOSITORY';
 export const COUNTRY_REPOSITORY = 'COUNTRY_REPOSITORY';
 export const BARCODE_REPOSITORY = 'BARCODE_REPOSITORY';
+export const FILE_CATEGORY_DIR = './uploads/categories-images';
+export const FILE_BRAND_DIR = './uploads/brands-images';

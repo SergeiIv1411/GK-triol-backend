@@ -32,4 +32,10 @@ export class BrandsService {
     async delete(id: number) {
         return await this.brandRepository.destroy({ where: { id } });
     }
+
+    async setImage(id: number, image: string): Promise<any> {
+        const [numberOfAffectedRows, [brand]] = await this.brandRepository.update({ image }, { where: { id }, returning: true });
+
+        return { numberOfAffectedRows, brand };
+    }
 }

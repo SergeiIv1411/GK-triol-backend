@@ -1,8 +1,28 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Request, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { CategoryDto } from './dto/category.dto';
 import { Category } from './category.entity';
 import { CategoriesService } from './categories.service';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { v4 as uuidv4 } from 'uuid';
+import path = require('path');
+import { FILE_CATEGORY_DIR } from 'src/core/constants';
+import { imageFileFilter } from 'src/utils/file-upload.utils';
+
+export const storage = {
+  storage: diskStorage({
+    destination: FILE_CATEGORY_DIR,
+    filename: (req, file, cb) => {
+      const filename: string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+      const extension: string = path.parse(file.originalname).ext;
+
+      cb(null, `${filename}${extension}`)
+    },
+  }),fileFilter: imageFileFilter
+
+}
+
 
 @ApiTags('categories')
 @Controller('categories')
@@ -21,7 +41,7 @@ export class CategoriesController {
     return await this.categoryService.findAll();
   }
 
-  @Get(': id')
+  @Get(':id')
   @ApiResponse({
     status: 200,
     description: 'Находит категорию по id',
@@ -48,7 +68,7 @@ export class CategoriesController {
     description: 'Создание категории',
     type: Category,
   })
-  create(@Body() createCategoryDto: CategoryDto): Promise<Category> {
+  create(@Body() createCategoryDto: CategoryDto, @Request() req): Promise<Category> {
     // create a new category and return the newly created post
     return this.categoryService.create(createCategoryDto);
   }
@@ -70,7 +90,7 @@ export class CategoriesController {
     description: 'Редактирование категории',
     type: Category,
   })
-  async update(@Param('id') id: number, @Body() updateCategoryDto: CategoryDto) {
+  async update(@Param('id') id: number, @Body() updateCategoryDto: CategoryDto): Promise<Category> {
     // get the number of row affected and the updated category
     const { numberOfAffectedRows, category } = await this.categoryService.update(id, updateCategoryDto);
 
@@ -90,7 +110,7 @@ export class CategoriesController {
     description: 'Удаление категории',
     type: Category,
   })
-  async remove(@Param('id') id: number) {
+  async remove(@Param('id') id: number): Promise<string> {
     // delete the category with this id
     const deleted = await this.categoryService.delete(id);
 
@@ -102,6 +122,22 @@ export class CategoriesController {
 
     // return success message
     return 'Successfully deleted';
+  }
+
+  @Put('uploadimage/:categoryid')
+  //@UseInterceptors(FileInterceptor('file', { storage, fileFilter: imageFileFilter }))
+  @UseInterceptors(
+    FileInterceptor('image', storage),
+  )
+  async uploadImage(@Param('categoryid') categoryId, @UploadedFile() file): Promise<Category> {
+    const { numberOfAffectedRows, category } = await this.categoryService.setImage(Number(categoryId), file.filename);
+
+    if (numberOfAffectedRows === 0) {
+      throw new NotFoundException('This Category doesn\'t exist');
+    }
+
+    // return the updated category
+    return category;
   }
 
   // @UseGuards(AuthGuard('jwt'))
