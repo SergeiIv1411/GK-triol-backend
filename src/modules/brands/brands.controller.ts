@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { BrandDto } from './dto/brand.dto';
 import { Brand } from './brand.entity';
 import { BrandsService } from './brands.service';
@@ -9,6 +9,7 @@ import { FILE_BRAND_DIR } from 'src/core/constants';
 import path = require('path');
 import { v4 as uuidv4 } from 'uuid';
 import { diskStorage } from 'multer';
+import { AuthGuard } from '@nestjs/passport';
 
 export const storage = {
     storage: diskStorage({
@@ -59,7 +60,7 @@ export class BrandsController {
         return brand;
     }
 
-    // @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'))
     @Post()
     @ApiBody({ type: BrandDto })
     @ApiResponse({
@@ -72,6 +73,7 @@ export class BrandsController {
         return this.brandService.create(createBrandDto);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Put(':id')
     @ApiResponse({
         status: 200,
@@ -92,6 +94,7 @@ export class BrandsController {
         return brand;
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Delete(':id')
     @ApiResponse({
         status: 200,

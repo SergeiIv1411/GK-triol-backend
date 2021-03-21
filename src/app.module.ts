@@ -10,6 +10,7 @@ import { UsersModule } from './modules/users/users.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { CountriesModule } from './modules/countries/countries.module';
 import { BarcodesModule } from './modules/barcodes/barcodes.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { BarcodesModule } from './modules/barcodes/barcodes.module';
     CategoriesModule,
     CountriesModule,
     BarcodesModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

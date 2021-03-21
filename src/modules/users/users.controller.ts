@@ -60,18 +60,6 @@ export class UsersController {
     }
 
     // @UseGuards(AuthGuard('jwt'))
-    @Post()
-    @ApiResponse({
-        status: 200,
-        description: 'Создание пользователя',
-        type: User,
-      })
-    create(@Body() createUserDto: UserDto): Promise<User> {
-        // create a new user and return the newly created user
-        return this.userService.create(createUserDto);
-    }
-
-    // @UseGuards(AuthGuard('jwt'))
     // @Put(':id')
     // async update(@Param('id') id: number, @Body() post: PostDto, @Request() req): Promise<PostEntity> {
     //     // get the number of row affected and the updated post
