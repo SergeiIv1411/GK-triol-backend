@@ -1,5 +1,7 @@
-import { Table, Column, Model, DataType, NotEmpty } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, NotEmpty, BelongsToMany, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
+import { Product } from '../products/product.entity';
+import { CategoryProduct } from '../relations/CategoryProduct/categoryProduct.entity';
 
 @Table
 export class Category extends Model<Category> {
@@ -28,4 +30,7 @@ export class Category extends Model<Category> {
         type: DataType.STRING
     })
     image: string;
+
 }
+
+

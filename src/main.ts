@@ -2,9 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import bodyParser from 'body-parser';
 import { AppModule } from './app.module';
+import {API_DESCRIPTION} from './core/constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
+  // global prefix
+  app.setGlobalPrefix('api/v1');
 
   const options = new DocumentBuilder()
     .setTitle('GK-triol back-end')
@@ -14,10 +18,10 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup(API_DESCRIPTION, app, document);
   
-  // global prefix
-  app.setGlobalPrefix('api/v1');
+  
+  
   await app.listen(3000);
 }
 bootstrap();

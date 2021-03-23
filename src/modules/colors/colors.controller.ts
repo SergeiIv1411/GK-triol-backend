@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ColorsService } from './colors.service';
 import { CreateColorDto } from './dto/create-color.dto';
 import { UpdateColorDto } from './dto/update-color.dto';
-import { Color } from './entities/color.entity';
+import { Color } from './color.entity';
 
 @ApiTags('colors')
 @Controller('colors')

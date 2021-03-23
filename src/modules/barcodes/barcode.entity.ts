@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType, NotEmpty } from 'sequelize-typescript';
-import { ApiProperty } from '@nestjs/swagger';
+import { Table, Column, Model, DataType, NotEmpty, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Product } from '../products/product.entity';
 
 @Table
 export class Barcode extends Model<Barcode> {
@@ -16,4 +17,15 @@ export class Barcode extends Model<Barcode> {
         type: DataType.STRING
     })
     description: string;
+
+   // @ApiProperty()
+    @ForeignKey(() => Product)
+    @Column({
+        type: DataType.STRING
+    })
+    productId: string;
+
+    @ApiProperty()
+    @BelongsTo(() => Product)
+    product: Product;
 }

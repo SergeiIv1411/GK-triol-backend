@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Color } from './entities/color.entity';
+import { Color } from './color.entity';
 import { CreateColorDto } from './dto/create-color.dto';
 import { UpdateColorDto } from './dto/update-color.dto';
 import { COLOR_REPOSITORY } from '../../core/constants';
